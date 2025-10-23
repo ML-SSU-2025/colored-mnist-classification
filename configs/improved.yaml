@@ -1,0 +1,11 @@
+seed: 42
+batch_size: 128
+lr: 0.0008
+epochs: 15
+image_size: 28
+color_mode: "random_rgb"
+background: "random"
+dropout: 0.3
+augmentations:
+  color_jitter: true
+  random_affine: true

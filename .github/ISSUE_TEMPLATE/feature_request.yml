@@ -1,0 +1,18 @@
+name: ✨ Feature request
+description: 새로운 실험/기능 아이디어 제안
+title: "[Feat] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: 제안 내용
+  - type: textarea
+    id: rationale
+    attributes:
+      label: 기대 효과 / 근거
+  - type: input
+    id: notebook
+    attributes:
+      label: 대상 노트북(신규/기존)
+      placeholder: notebooks/04_improved_train.ipynb

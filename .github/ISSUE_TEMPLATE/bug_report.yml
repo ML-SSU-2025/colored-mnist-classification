@@ -1,0 +1,20 @@
+name: 🐞 Bug report
+description: 실행 중 발생한 문제를 보고합니다.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 문제 설명
+      description: 에러 메시지, 화면 캡처 포함
+  - type: input
+    id: notebook
+    attributes:
+      label: 관련 노트북 파일
+      placeholder: notebooks/03_baseline_train.ipynb
+  - type: input
+    id: env
+    attributes:
+      label: 환경
+      placeholder: conda env, torch==, cuda==

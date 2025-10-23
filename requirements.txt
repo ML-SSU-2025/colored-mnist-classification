@@ -1,0 +1,26 @@
+torch
+torchvision
+numpy
+pandas
+scikit-learn
+matplotlib
+seaborn
+tqdm
+ipywidgets
+jupyter
+ipykernel
+pyyaml
+pillow
+torchmetrics
+tensorboard
+nbdime
+jupytext
+nbstripout
+umap-learn
+grad-cam
+# Optional
+# opencv-python-headless
+# scikit-image
+# albumentations
+# captum
+# wandb

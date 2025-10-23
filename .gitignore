@@ -1,0 +1,11 @@
+.ipynb_checkpoints/
+__pycache__/
+data/raw/
+data/processed/
+results/logs/
+results/**/*.ckpt
+*.pth
+*.pt
+*.ckpt
+*.event*
+.DS_Store
