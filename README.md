@@ -1,6 +1,6 @@
 # 🎨 Colored MNIST Classification (Jupyter-first, Python 3.10.13)
 
-Soongsil Univ. IT융합 · 머신러닝(2024-2)
+Soongsil Univ. IT융합 · 머신러닝(2025-2)
 
 ## ✅ 공식 개발 환경
 - **Python: 3.10.13 (고정)**
