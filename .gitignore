@@ -1,11 +1,55 @@
+# === Team .gitignore (Colored MNIST, Colab-first) ===
+
+# Core project exclusions
+data/
+results/
+logs/
+outputs/
+
+# Model weights / checkpoints / binaries
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.onnx
+*.tflite
+
+# Arrays / caches
+*.npy
+*.npz
+*.pkl
+*.cache
+
+# Logs / tensorboard
+*.log
+events.out.tfevents.*
+**/logs/**
+**/tensorboard/**
+
+# Images & export docs (policy: keep them out of repo)
+**/figures/**
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.pdf
+
+# Jupyter & Python artifacts
 .ipynb_checkpoints/
 __pycache__/
-data/raw/
-data/processed/
-results/logs/
-results/**/*.ckpt
-*.pth
-*.pt
-*.ckpt
-*.event*
+*.pyc
+*.pyo
+*.pyd
+*.tmp
+
+# OS / Editor files
 .DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.code-workspace
+
+# Env / credentials
+.env
+.venv/
+*.lock
