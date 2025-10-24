@@ -1,6 +1,6 @@
 # 🎨 Colored MNIST Classification (Colab-first, develop base)
 
-Soongsil Univ. IT융합 · 머신러닝(2024-2)
+Soongsil Univ. IT융합 · 머신러닝(2025-2)
 
 ---
 
