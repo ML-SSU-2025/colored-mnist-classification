@@ -1,32 +1,32 @@
-# === Team .gitignore (Colored MNIST, Colab-first) ===
+# === Colored MNIST Classical ML Rules ===
 
-# Core project exclusions
+# Data & experiment outputs (always local)
 data/
 results/
 logs/
 outputs/
 
-# Model weights / checkpoints / binaries
+# Binary / model artifacts
 *.pt
 *.pth
+*.onnx
 *.ckpt
 *.bin
-*.onnx
 *.tflite
 
-# Arrays / caches
-*.npy
+# Arrays / serialized data
 *.npz
+*.npy
 *.pkl
-*.cache
+*.pickle
 
-# Logs / tensorboard
+# Logs & analytics
 *.log
-events.out.tfevents.*
 **/logs/**
 **/tensorboard/**
+events.out.tfevents.*
 
-# Images & export docs (policy: keep them out of repo)
+# Plots / exported figures
 **/figures/**
 *.png
 *.jpg
@@ -34,22 +34,22 @@ events.out.tfevents.*
 *.svg
 *.pdf
 
-# Jupyter & Python artifacts
-.ipynb_checkpoints/
+# Python & notebook caches
 __pycache__/
+.ipynb_checkpoints/
 *.pyc
 *.pyo
 *.pyd
 *.tmp
 
-# OS / Editor files
+# Editors / OS
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
 *.code-workspace
 
-# Env / credentials
+# Environments / secrets
 .env
 .venv/
 *.lock
