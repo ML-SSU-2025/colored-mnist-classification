@@ -334,12 +334,3 @@ mkdir -p data/raw/fonts    # 선택
 - Maintainer: 정재훈 (Jaehoon Jung)
 - GitHub: ML-SSU-2025 org 내 운영
 
-위 버전 그대로 `README.md`에 저장하고 `develop` 브랜치에 커밋하면 됩니다.
-
-```bash
-git add README.md
-git commit -m "[doc] update README for local workflow and classical ML pipeline"
-git push origin develop
-```
-
-이제 팀원들은 README만 읽어도 전처리 → 학습 → 협업까지 전체 플로우를 이해할 수 있으며, 구현과 결과 분석에 집중하면 됩니다.
