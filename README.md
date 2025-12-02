@@ -191,13 +191,14 @@ mkdir -p data/raw/fonts    # 선택
 5. **EDA**
    - Original vs Colored 시각화, Font-based 샘플, 라벨 분포, Digit×Color 교차분포 확인
 6. **최종 Merge & Split**
-   - base/aug/font 샘플 통합 후 셔플, `train/test split`(test_size=0.2, stratify=y_digit)
-   - `X_train` 기준 feature-wise mean/std 계산 후 표준화 버전 저장
+   - base/aug/font 샘플 통합 후 셔플, **Train/Val/Test = 0.64 / 0.16 / 0.20** (test_size=0.2, train 내부에서 val 20%)
+   - 모든 split이 `stratify=y_digit` 조건을 만족하도록 분할
+   - `X_train` 기준 feature-wise mean/std 계산 후 동일 통계를 val/test에 적용
 
 **출력**: `data/processed/colored_mnist/colored_mnist.npz`
-- `X_train`, `X_test` (표준화)
-- `X_train_raw`, `X_test_raw`
-- `y_digit_*`, `y_fg_*`, `y_bg_*`
+- `X_train`, `X_val`, `X_test` (표준화; mean/std는 train에서 계산)
+- `X_train_raw`, `X_val_raw`, `X_test_raw`
+- `y_digit_*`, `y_fg_*`, `y_bg_*` (train/val/test)
 - `mean`, `std`
 
 이 파일은 로컬 전용이며 Git에 커밋하지 않습니다.
@@ -333,4 +334,3 @@ mkdir -p data/raw/fonts    # 선택
 문의 / 이슈 / PR 환영합니다.
 - Maintainer: 정재훈 (Jaehoon Jung)
 - GitHub: ML-SSU-2025 org 내 운영
-
