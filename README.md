@@ -294,10 +294,11 @@ mkdir -p data/raw/fonts    # 선택
 |------|------|----------------|
 | Team Lead | 정재훈 | 전체 총괄, 일정 관리, GitHub 구조 설계 |
 | Data | 정재훈 | Colored MNIST 설계 및 전처리 파이프라인 |
-| Data | 최은지 | 색상/폰트 샘플링, EDA 보조 |
-| Modeling | 이재민 | Decision Tree / Random Forest |
-| Modeling | 성도연 | KNN / SVM 튜닝 및 비교 |
-| Evaluation | 이다정 | Confusion Matrix, 지표 정리, 표 생성 |
+| Data | 최은지 | 데이터 전처리, 색상/폰트 샘플링, EDA |
+| Modeling | 정재훈 | Xgboost 튜닝 및 평가 분석 |
+| Modeling | 이재민 | KNN 튜닝 및 평가 분석 |
+| Modeling | 성도연 | SVM 튜닝 및 평가 분석 |
+| Evaluation | 이다정 | Decision Tree / Random Forest 튜닝 및 평가 분석 |
 
 (역할 분담은 프로젝트 진행 상황에 따라 조정 가능합니다.)
 
