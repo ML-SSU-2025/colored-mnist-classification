@@ -69,7 +69,7 @@ colored-mnist-classification/
 │
 ├── notebooks/
 │   ├── 01_preprocessing_colored_mnist.ipynb   # Colored MNIST 생성 + 전처리 + EDA
-│   ├── 02_train_classical_ml.ipynb            # 3개 Task × 5개 모델 학습 및 평가
+│   ├── 02_train_classical_ml.ipynb            # 3개 Task × 5개 모델(val/test 평가, GridSearch 일부)
 │   └── 03_evaluation_and_plots.ipynb          # 결과 해석, 지표 정리, 그림 생성
 │
 ├── data/
@@ -207,37 +207,37 @@ mkdir -p data/raw/fonts    # 선택
 
 ## 🤖 02_train_classical_ml.ipynb
 
-`colored_mnist.npz`를 로드하여 **3개 Task × 5개 모델**을 학습/평가합니다.
+`data/processed/colored_mnist/colored_mnist.npz`(train/val/test, 표준화된 features + raw features)을 로드하여 **3개 Task × 5개 모델**을 학습/평가합니다. 노트북 상단의 `TASK` 값을 `digit` / `fg` / `bg` 중 하나로 선택해 라벨을 바꿉니다.
 
 ### 대상 Task
 - `digit`: 10-way classification
-- `fg_color`: 7-way classification
-- `bg_color`: 7-way classification
+- `fg` (foreground color): 7-way classification (ROYGBIV)
+- `bg` (background color): 7-way classification (ROYGBIV)
 
 ### 사용 모델
-1. `KNeighborsClassifier`
-2. `SVC (RBF kernel)`
-3. `DecisionTreeClassifier`
-4. `RandomForestClassifier`
-5. `LogisticRegression (multinomial)`
+1. `KNeighborsClassifier` + GridSearchCV(k, weights, p)
+2. `SVC (RBF)` + GridSearchCV(C, gamma)
+3. `DecisionTreeClassifier` (baseline)
+4. `RandomForestClassifier` (500 trees, entropy)
+5. `xgboost.XGBClassifier` (early stopping, hist)
 
-모든 모델은 `random_state`를 고정하고 표준화된 입력을 사용합니다.
+모든 모델은 `random_state=42`로 고정하며 표준화된 입력을 사용합니다.
 
-### 평가 지표
-각 (Task, Model) 조합에 대해
-- Accuracy
-- Precision (macro)
-- Recall (macro)
-- F1-score (macro)
-- Confusion Matrix (시각화)
+### 평가/동작
+- 공통 함수 `evaluate_classifier`가 train 후 **val/test** 모두에 대해 Accuracy, Precision/Recall/F1(weighted)과 Confusion Matrix를 출력합니다.
+- KNN/SVM은 작은 그리드 서치, XGBoost는 early stopping(`eval_set=[(X_val, y_val)]`)을 사용합니다.
+- 현재는 결과물(CSV/PNG)을 자동 저장하지 않고, 노트북에서 바로 지표와 플롯을 확인하는 형태입니다.
+
+### 실행 흐름
+1. `colored_mnist.npz`가 존재하는지 확인 (`data/processed/colored_mnist/colored_mnist.npz`).
+2. `TASK`를 원하는 과제로 설정.
+3. XGBoost가 없다면 상단 셀에서 설치 후 런타임 재시작(Colab 등).
+4. 각 모델 셀을 순차 실행 → 콘솔 로그와 플롯으로 결과 확인.
 
 ### 출력
-- `results/metrics/classical_ml_summary.csv`
-- Task별 세부: `results/metrics/digit_model_performance.csv`, `results/metrics/fg_color_model_performance.csv`, `results/metrics/bg_color_model_performance.csv`
-- Confusion Matrix 이미지: `results/figures/cm_{task}_{model}.png`
-- RandomForest Feature Importance heatmap: `results/figures/fi_{task}_rf.png`
-
-모든 결과물은 보고서/PPT에 바로 활용 가능한 형식을 목표로 합니다.
+- 콘솔 로그: val/test 지표 및 best hyperparameters
+- 플롯: val/test 혼동행렬 (즉시 표시)
+- 필요 시 지표/그림 저장 코드는 추후 추가 예정
 
 ---
 
@@ -334,3 +334,19 @@ mkdir -p data/raw/fonts    # 선택
 문의 / 이슈 / PR 환영합니다.
 - Maintainer: 정재훈 (Jaehoon Jung)
 - GitHub: ML-SSU-2025 org 내 운영
+
+---
+
+## 📌 현재 진행 상황 & 향후 발전 방향
+
+### 진행 상황
+- **데이터 파이프라인**: 01 노트북으로 Colored MNIST를 생성/표준화하여 `data/processed/colored_mnist/colored_mnist.npz`에 train/val/test 및 raw/표준화된 features를 모두 저장.
+- **모델링 노트북(02)**: 단일 `TASK` 선택 방식으로 digit/fg/bg 중 하나를 평가. KNN·SVM은 간단한 GridSearchCV, XGBoost는 early stopping 적용. 공통 평가 함수로 val/test 지표와 혼동행렬을 즉시 확인 가능.
+- **지표 저장**: 현재는 CSV/PNG 자동 저장 없이 노트북 내부 확인 중심. 결과물을 파일로 남기는 부분은 이후 보완 예정.
+
+### 향후 발전 방향
+1. **결과 저장 자동화**: val/test 지표를 CSV로, 혼동행렬/feature importance를 PNG로 저장하는 옵션 추가 (출력 경로는 `results/metrics`, `results/figures` 권장).
+2. **다중 Task 배치 실행**: 한 번에 digit/fg/bg를 모두 돌려 비교할 수 있는 루프/CLI 스크립트 추가.
+3. **하이퍼파라미터 관리**: GridSearch 공간/seed를 config로 분리하고, 실행 시간을 고려한 프리셋(빠른/정밀) 제공.
+4. **실행 로그/재현성**: 실행 시점, 사용 모델, best params를 요약해 남기는 로거/요약 셀 추가.
+5. **03 노트북 정리**: 현재 평가 흐름에 맞춰 결과 테이블/플롯 생성 부분을 정비하고, 발표용 그림을 자동화.
