@@ -9,7 +9,7 @@
 3. **Background Color Classification** (배경색 7-class 분류)
 
 > 🚫 본 프로젝트에서는 CNN, MLP 등 인공신경망 기반 모델을 사용하지 않습니다.  
-> ✅ KNN, SVM, Decision Tree, Random Forest, Logistic Regression 중심으로 진행합니다.
+> ✅ KNN, SVM, Decision Tree, Random Forest, XGBoost 중심으로 진행합니다.
 
 ---
 
@@ -70,7 +70,7 @@ colored-mnist-classification/
 ├── notebooks/
 │   ├── 01_preprocessing_colored_mnist.ipynb   # Colored MNIST 생성 + 전처리 + EDA
 │   ├── 02_train_classical_ml.ipynb            # 3개 Task × 5개 모델(val/test 평가, GridSearch 일부)
-│   └── 03_evaluation_and_plots.ipynb          # 결과 해석, 지표 정리, 그림 생성
+│   └── 03_evaluation_and_plots.ipynb          # 리포트용 재평가(혼동행렬/오분류/정규화 결과)
 │
 ├── data/
 │   ├── raw/
@@ -199,6 +199,7 @@ mkdir -p data/raw/fonts    # 선택
 - `X_train`, `X_val`, `X_test` (표준화; mean/std는 train에서 계산)
 - `X_train_raw`, `X_val_raw`, `X_test_raw`
 - `y_digit_*`, `y_fg_*`, `y_bg_*` (train/val/test)
+- `source_train`, `source_val`, `source_test` (데이터 출처 태그)
 - `mean`, `std`
 
 이 파일은 로컬 전용이며 Git에 커밋하지 않습니다.
@@ -207,7 +208,7 @@ mkdir -p data/raw/fonts    # 선택
 
 ## 🤖 02_train_classical_ml.ipynb
 
-`data/processed/colored_mnist/colored_mnist.npz`(train/val/test, 표준화된 features + raw features)을 로드하여 **3개 Task × 5개 모델**을 학습/평가합니다. 노트북 상단의 `TASK` 값을 `digit` / `fg` / `bg` 중 하나로 선택해 라벨을 바꿉니다.
+`data/processed/colored_mnist/colored_mnist.npz`(train/val/test, 표준화된 features + raw features)을 로드하여 **3개 Task × 5개 모델**을 학습/평가하고 리포트용 지표를 정리합니다. 노트북 상단의 `TASK` 값을 `digit` / `fg` / `bg` 중 하나로 선택해 라벨을 바꿉니다.
 
 ### 대상 Task
 - `digit`: 10-way classification
@@ -226,7 +227,7 @@ mkdir -p data/raw/fonts    # 선택
 ### 평가/동작
 - 공통 함수 `evaluate_classifier`가 train 후 **val/test** 모두에 대해 Accuracy, Precision/Recall/F1(weighted)과 Confusion Matrix를 출력합니다.
 - KNN/SVM은 작은 그리드 서치, XGBoost는 early stopping(`eval_set=[(X_val, y_val)]`)을 사용합니다.
-- 현재는 결과물(CSV/PNG)을 자동 저장하지 않고, 노트북에서 바로 지표와 플롯을 확인하는 형태입니다.
+- 현재는 결과물(CSV/PNG)을 자동 저장하지 않고, 노트북에서 바로 지표와 플롯을 확인하는 형태입니다(리포트용으로 필요 시 수동 저장).
 
 ### 실행 흐름
 1. `colored_mnist.npz`가 존재하는지 확인 (`data/processed/colored_mnist/colored_mnist.npz`).
@@ -241,12 +242,17 @@ mkdir -p data/raw/fonts    # 선택
 
 ---
 
-## 📊 03_evaluation_and_plots.ipynb (선택)
+## 📊 03_evaluation_and_plots.ipynb (리포트 정리)
 
-- 모델 결과 요약표 정리
-- best 모델 하이라이트, 오분류 사례 캡처
-- 발표용 플롯/테이블 생성
-- `results/figures/` 및 `docs/` 자료와 연동
+- 입력: 01에서 생성한 `colored_mnist.npz`를 로드.
+- `TARGET_MODEL_NAME`를 02에서 가장 성능이 좋았던 모델 이름으로 설정(예: `"rf"`, `"xgb"`, `"svm"` 등).
+- 각 task (`digit`, `fg`, `bg`)에 대해 동일한 설정으로 **다시 학습(train→val)** 후 리포트용 결과를 생성:
+  - Confusion matrix 2종: raw count / normalized 비율.
+  - Class-wise accuracy 테이블 + bar plot.
+  - Source-wise accuracy 테이블 + bar plot(데이터 출처별 성능 비교).
+  - 오분류 샘플 CSV 저장 + 이미지 시각화.
+  - 가장 많이 헷갈리는 `(true → pred)` 조합 상위 몇 건을 출력.
+- 발표/보고서에 바로 사용할 수 있는 표와 그림을 한 번에 모으는 용도입니다.
 
 ---
 
@@ -294,12 +300,11 @@ mkdir -p data/raw/fonts    # 선택
 |------|------|----------------|
 | Team Lead | 정재훈 | 전체 총괄, 일정 관리, GitHub 구조 설계 |
 | Data | 정재훈 | Colored MNIST 설계 및 전처리 파이프라인 |
-| Data | 최은지 | 색상/폰트 샘플링, EDA 보조 |
-| Modeling | 이재민 | Decision Tree / Random Forest |
-| Modeling | 성도연 | KNN / SVM 튜닝 및 비교 |
-| Evaluation | 이다정 | Confusion Matrix, 지표 정리, 표 생성 |
-
-(역할 분담은 프로젝트 진행 상황에 따라 조정 가능합니다.)
+| Data | 최은지 | 데이터 전처리, 색상/폰트 샘플링, EDA |
+| Modeling | 정재훈 | XGBoost 튜닝 및 평가 분석 |
+| Modeling | 이재민 | KNN 튜닝 및 평가 분석 |
+| Modeling | 성도연 | SVM 튜닝 및 평가 분석 |
+| Evaluation | 이다정 | Decision Tree / Random Forest 튜닝 및 평가 분석 |
 
 ---
 
@@ -341,12 +346,13 @@ mkdir -p data/raw/fonts    # 선택
 
 ### 진행 상황
 - **데이터 파이프라인**: 01 노트북으로 Colored MNIST를 생성/표준화하여 `data/processed/colored_mnist/colored_mnist.npz`에 train/val/test 및 raw/표준화된 features를 모두 저장.
-- **모델링 노트북(02)**: 단일 `TASK` 선택 방식으로 digit/fg/bg 중 하나를 평가. KNN·SVM은 간단한 GridSearchCV, XGBoost는 early stopping 적용. 공통 평가 함수로 val/test 지표와 혼동행렬을 즉시 확인 가능.
-- **지표 저장**: 현재는 CSV/PNG 자동 저장 없이 노트북 내부 확인 중심. 결과물을 파일로 남기는 부분은 이후 보완 예정.
+- **모델링 노트북(02)**: 단일 `TASK` 선택 방식으로 digit/fg/bg 중 하나를 평가. KNN·SVM은 간단한 GridSearchCV, XGBoost는 early stopping 적용. 공통 평가 함수로 val/test 지표와 혼동행렬을 즉시 확인 가능(리포트용 비교).
+- **리포트 노트북(03)**: 02에서 선정한 `TARGET_MODEL_NAME`으로 digit/fg/bg를 각각 재학습(train→val)하여 confusion matrix(카운트/정규화), class/source-wise accuracy 테이블·bar plot, 오분류 CSV·이미지, 상위 혼동 조합을 산출.
+- **지표 저장**: 02는 화면 출력 중심, 03은 오분류 CSV 등 일부 산출물을 저장하며 플롯은 노트북에서 바로 확인.
 
 ### 향후 발전 방향
-1. **결과 저장 자동화**: val/test 지표를 CSV로, 혼동행렬/feature importance를 PNG로 저장하는 옵션 추가 (출력 경로는 `results/metrics`, `results/figures` 권장).
-2. **다중 Task 배치 실행**: 한 번에 digit/fg/bg를 모두 돌려 비교할 수 있는 루프/CLI 스크립트 추가.
+1. **결과 저장 자동화**: 02/03 모두에서 지표·플롯을 지정 경로(`results/metrics`, `results/figures`)에 자동 저장하는 옵션 추가.
+2. **다중 Task 배치 실행**: digit/fg/bg를 한 번에 돌려 공통 포맷으로 결과를 묶어주는 루프/CLI 스크립트 추가.
 3. **하이퍼파라미터 관리**: GridSearch 공간/seed를 config로 분리하고, 실행 시간을 고려한 프리셋(빠른/정밀) 제공.
 4. **실행 로그/재현성**: 실행 시점, 사용 모델, best params를 요약해 남기는 로거/요약 셀 추가.
-5. **03 노트북 정리**: 현재 평가 흐름에 맞춰 결과 테이블/플롯 생성 부분을 정비하고, 발표용 그림을 자동화.
+5. **리포트 자동화**: 03 노트북에서 생성된 표/이미지·오분류 CSV를 발표/문서용 폴더에 일괄 내보내는 스크립트화.
