@@ -1,0 +1,34 @@
+# Digit Classification Task 최적 설정
+# Task: 10-way classification (0-9)
+
+experiment:
+  name: "digit_classification"
+  task: "digit"
+  description: "Digit classification (0-9)"
+
+# 사용할 모델 목록
+active_models:
+  - knn
+  - svm
+  - tree
+  - rf
+  - xgb
+
+# 모델별 최적 하이퍼파라미터 (models.yaml의 base 값 사용)
+# 필요시 여기서 오버라이드 가능
+
+# GridSearch 사용 여부
+use_gridsearch:
+  knn: false
+  svm: false
+  tree: false
+  rf: false
+  xgb: false
+
+# 평가 설정
+evaluation:
+  cv: 3
+  scoring: "accuracy"
+  save_results: true
+  save_figures: true
+

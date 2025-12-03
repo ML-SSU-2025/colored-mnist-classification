@@ -1,0 +1,31 @@
+# Background Color Classification Task 최적 설정
+# Task: 7-way classification (ROYGBIV)
+
+experiment:
+  name: "bg_color_classification"
+  task: "bg"
+  description: "Background color classification (7 classes, ROYG BIV)"
+
+# 사용할 모델 목록
+active_models:
+  - knn
+  - svm
+  - tree
+  - rf
+  - xgb
+
+# GridSearch 사용 여부
+use_gridsearch:
+  knn: false
+  svm: false
+  tree: false
+  rf: false
+  xgb: false
+
+# 평가 설정
+evaluation:
+  cv: 3
+  scoring: "accuracy"
+  save_results: true
+  save_figures: true
+

@@ -1,0 +1,17 @@
+# 프로젝트 경로 통합 관리
+# 노트북에서 사용 시 상대 경로로 해석됨
+
+paths:
+  # 데이터 경로
+  data:
+    raw_mnist: "data/raw/mnist/mnist_train.npz"
+    raw_fonts: "data/raw/fonts"
+    processed: "data/processed/colored_mnist/colored_mnist_100k_train_val.npz"
+  
+  # 결과 저장 경로
+  results:
+    metrics: "results/metrics"
+    figures: "results/figures"
+    models: "results/models"
+    error_analysis: "results/error_analysis"
+

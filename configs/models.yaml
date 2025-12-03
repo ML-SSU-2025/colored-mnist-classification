@@ -1,0 +1,89 @@
+# 모델별 하이퍼파라미터 정의
+# base: 기본 하이퍼파라미터
+# grid_search: GridSearchCV에 사용할 파라미터 그리드
+# needs_scaling: StandardScaler 필요 여부
+
+models:
+  logreg:
+    base:
+      max_iter: 500
+      n_jobs: -1
+      multi_class: "auto"
+      solver: "lbfgs"
+      C: 1.0
+    grid_search:
+      clf__C: [0.1, 1.0, 10.0]
+    needs_scaling: true
+
+  knn:
+    base:
+      n_neighbors: 5
+      p: 2
+      metric: "minkowski"
+      weights: "distance"
+    grid_search:
+      clf__n_neighbors: [3, 5, 7, 11]
+      clf__weights: ["uniform", "distance"]
+      clf__p: [1, 2]
+    needs_scaling: true
+
+  svm:
+    base:
+      decision_function_shape: "ovr"
+      gamma: "auto"
+      C: 1.0
+    grid_search:
+      clf__C: [0.5, 1.0, 2.0]
+      clf__gamma: ["scale", 0.01]
+    needs_scaling: true
+
+  tree:
+    base:
+      criterion: "entropy"
+      max_depth: null
+      min_samples_split: 5
+      min_samples_leaf: 3
+    grid_search:
+      clf__max_depth: [null, 10]
+      clf__min_samples_split: [2, 5]
+    needs_scaling: false
+
+  rf:
+    base:
+      n_estimators: 300
+      criterion: "entropy"
+      max_depth: null
+      min_samples_split: 2
+      min_samples_leaf: 1
+      n_jobs: -1
+    grid_search:
+      clf__n_estimators: [200, 300]
+      clf__max_depth: [null, 20]
+    needs_scaling: false
+
+  xgb:
+    base:
+      n_estimators: 200
+      learning_rate: 0.1
+      max_depth: 6
+      subsample: 0.8
+      colsample_bytree: 0.8
+      objective: "multi:softmax"
+      tree_method: "hist"
+      eval_metric: "mlogloss"
+      n_jobs: -1
+    grid_search:
+      clf__n_estimators: [100, 200]
+      clf__max_depth: [4, 6]
+      clf__learning_rate: [0.05, 0.1]
+    needs_scaling: false
+
+# GridSearch 사용 여부 (기본값: false)
+use_gridsearch:
+  logreg: false
+  knn: false
+  svm: false
+  tree: false
+  rf: false
+  xgb: false
+
