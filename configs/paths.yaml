@@ -7,6 +7,8 @@ paths:
     raw_mnist: "data/raw/mnist/mnist_train.npz"
     raw_fonts: "data/raw/fonts"
     processed: "data/processed/colored_mnist/colored_mnist_100k_train_val.npz"
+    test: null  # 교수님 Test 셋 경로 (나중에 설정)
+    # 예: test: "data/test/professor_test_set.npz"
   
   # 결과 저장 경로
   results:

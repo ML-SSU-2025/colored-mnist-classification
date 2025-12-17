@@ -1,12 +1,13 @@
 # Foreground Color Classification Task 최적 설정
 # Task: 7-way classification (ROYGBIV)
+# 중간보고서 기준 - 로지스틱 회귀 제거, 앙상블 제거
 
 experiment:
   name: "fg_color_classification"
   task: "fg"
   description: "Foreground color classification (7 classes, ROYG BIV)"
 
-# 사용할 모델 목록
+# 사용할 모델 목록 (로지스틱 회귀 제거)
 active_models:
   - knn
   - svm
@@ -14,7 +15,10 @@ active_models:
   - rf
   - xgb
 
-# GridSearch 사용 여부
+# 모델별 최적 하이퍼파라미터는 models.yaml의 task별 설정 사용
+# 필요시 여기서 오버라이드 가능
+
+# GridSearch 사용 여부 (모두 false - 보고서 최적값 사용)
 use_gridsearch:
   knn: false
   svm: false
@@ -28,4 +32,3 @@ evaluation:
   scoring: "accuracy"
   save_results: true
   save_figures: true
-

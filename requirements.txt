@@ -1,26 +1,29 @@
-torch
-torchvision
-numpy
-pandas
-scikit-learn
-matplotlib
-seaborn
-tqdm
-ipywidgets
-jupyter
-ipykernel
-pyyaml
-pillow
-torchmetrics
-tensorboard
-nbdime
-jupytext
-nbstripout
-umap-learn
-grad-cam
-# Optional
-# opencv-python-headless
-# scikit-image
-# albumentations
-# captum
-# wandb
+# Colored MNIST Classification Project - 필수 패키지
+# Python 3.9 ~ 3.11 권장
+
+# 데이터 처리
+numpy>=1.21.0
+pandas>=1.3.0
+
+# 머신러닝
+scikit-learn>=1.0.0
+xgboost>=1.5.0
+
+# 시각화
+matplotlib>=3.4.0
+seaborn>=0.11.0
+
+# 이미지 처리
+pillow>=8.0.0
+opencv-python-headless>=4.5.0
+
+# 설정 파일 처리
+pyyaml>=5.4.0
+
+# Jupyter 환경
+jupyter>=1.0.0
+ipykernel>=6.0.0
+
+# 기타 유틸리티
+scipy>=1.7.0
+tqdm>=4.62.0
